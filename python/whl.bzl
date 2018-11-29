@@ -16,8 +16,10 @@
 def _whl_impl(repository_ctx):
   """Core implementation of whl_library."""
 
+  env = repository_ctx.os.environ
+  python = env.get("BAZEL_PIP_PYTHON", "python3")
   args = [
-    "python3",
+    python,
     repository_ctx.path(repository_ctx.attr._script),
     "--whl", repository_ctx.path(repository_ctx.attr.whl),
     "--requirements", repository_ctx.attr.requirements,
