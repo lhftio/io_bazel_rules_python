@@ -21,10 +21,11 @@ def _pip_import_impl(repository_ctx):
   # via //this/sort/of:path and we wouldn't be able to load our generated
   # requirements.bzl without it.
   repository_ctx.file("BUILD", "")
-
+  env = repository_ctx.os.environ
+  python = env.get("BAZEL_PIP_PYTHON", "python3")
   # To see the output, pass: quiet=False
   result = repository_ctx.execute([
-    "python3", repository_ctx.path(repository_ctx.attr._script),
+    python, repository_ctx.path(repository_ctx.attr._script),
     "--name", repository_ctx.attr.name,
     "--input", repository_ctx.path(repository_ctx.attr.requirements),
     "--output", repository_ctx.path("requirements.bzl"),
